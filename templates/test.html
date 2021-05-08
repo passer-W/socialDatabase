@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css">
+    <title>{{ title }}</title>
+</head>
+<body>
+<p><h1>{{ hello }}</h1></p>
+<p>{{ now | date:"Y-m-d h:i:s" }}</p>
+{% load static %}
+<img src="{% static "images/logo.jpg" %}" alt="hello-logo">
+</body>
+</html>

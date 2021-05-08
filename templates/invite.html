@@ -1,0 +1,22 @@
+{% extends "menu.html" %}
+{% block mainbody %}
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    <div class="page-header" style="text-align: center">
+    </div>
+    <div class="form-horizontal" style="text-align: center">
+        <form action="/social/verify/" method="post">
+            {% csrf_token %}
+            <span class="help-block" style="color: #ce8483">Tips: 首次登录请输入您的常用昵称</span>
+            <div class="input-group col-md-3" style="margin: 20px auto; text-align: center">
+                <input type="text" class="form-control m-auto" placeholder="请输入邀请码或昵称" name="code" value="admin" id="q">
+                <span class="input-group-btn">
+               <button class="btn btn-success btn-search">验证身份</button>
+            </span>
+            </div>
+        </form>
+    </div>
+    <div class="page-header" style="text-align: center">
+    </div>
+    {% block resultbody %}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "main.html" %}
+
+{% block toolbody %}
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    <div class="inline-group col-md-offset-3" style="text-align: center; margin-bottom: 20px">
+        <div class="col-md-4">
+            <form class="inline-group form-inline" action="/social/user/add/" method="post">
+                {% csrf_token %}
+                <label class="" for="q">添加用户</label>
+                <input type="text" class="form-control" placeholder="请输入{{ query }}" name="name" id="q">
+                <span class="input-group">
+                <button type="submit" class="btn btn-default" aria-label="Right Align">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+        </span>
+
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form class="inline-group form-inline" action="/social/user/list/" method="get">
+                <label class="" for="q">查询用户</label>
+                <input type="text" class="form-control " placeholder="请输入{{ query }}" name="q" id="q">
+                <span class="input-group">
+                <button type="submit" class="btn btn-default " aria-label="Right Align">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-4" style="margin: 20px auto"></div>
+{% endblock %}
+{% block tablebody %}
+    <tr class="info-tool">
+        <th>用户名</th>
+        <th>邀请码</th>
+        <th>是否激活</th>
+        <th>是否为管理员</th>
+        <th>修改</th>
+        <th>删除</th>
+    </tr>
+    {% for i in user_list %}
+        <tr>
+            <td>{{ i.name }}</td>
+            <td>{{ i.code }}</td>
+            <td>{% if i.isActive %}已激活{% else %}未激活{% endif %}
+            </td>
+            <td>{% if i.isAdmin %}<span class="glyphicon glyphicon-ok right-btn" aria-hidden="true"></span>{% else %}
+                <span class="glyphicon glyphicon-remove wrong-btn" aria-hidden="true"></span>{% endif %}
+            </td>
+            <td>
+                <button class="new-btn"><span class="glyphicon glyphicon-pencil" onclick="edit({{ i.id }})"></span>
+                </button>
+            </td>
+            <td>
+                <button class="new-btn"><span class="glyphicon glyphicon-trash" onclick='confirm(del, "{{ i.name }}")'
+                                              aria-hidden="true"></span></button>
+            </td>
+        </tr>
+    {% endfor %}
+    <form style="display: none" id="delete" action="/social/user/delete/" method="post">
+        {% csrf_token %}
+        <input name="name" style="display: none" id="ext_name">
+    </form>
+    <form style="display: none" id="edit" action="/social/user/edit/" method="post">
+        {% csrf_token %}
+        <input name="name" style="display: none" id="ext_name">
+    </form>
+    <tr>
+        <script>
+            function edit(id) {
+                var token = $("[name = 'csrfmiddlewaretoken']").val()
+                $.ajax({
+                        url: "/social/json/info/",
+                        type: "post",
+                        data: {
+                            'csrfmiddlewaretoken': token,
+                            'id': id
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            $("#name").val(data["name"])
+                            $("#code").val(data["code"])
+                            if (data['isActive'] === true) {
+                                $("[name=active]").eq(0).attr("checked", "true")
+                            } else {
+                                $('[name=active]')[1].checked = true;
+                            }
+                            if (data['isAdmin'] === true) {
+                                $("[name=admin]").val('管理员')
+                            } else {
+                                $("[name=admin]").val('普通用户')
+                            }
+                            $("#id[name=id]").val(id)
+                        },
+                    }
+                )
+                $('#editModal').modal('show')
+            }
+
+            function confirm(fun, name) {
+                if ($("#myConfirm").length > 0) {
+                    $("#myConfirm").remove();
+                }
+                var html = "<div class='modal fade' id='myConfirm' >"
+                    + "<div class='modal-backdrop in' style='opacity:0; '></div>"
+                    + "<div class='modal-dialog' style='z-index:2901; margin-top:60px; width:400px; '>"
+                    + "<div class='modal-content'>"
+                    + "<div class='modal-header'  style='font-size:16px; '>"
+                    + "提示<button type='button' class='close' data-dismiss='modal'>"
+                    + "<span style='font-size:18px; margin-top: 3px' class='glyphicon glyphicon-remove'></span></button></div>"
+                    + "<div class='modal-body text-center' id='myConfirmContent' style='font-size:18px; '>"
+                    + "是否确认删除该用户？"
+                    + "</div>"
+                    + "<div class='modal-footer ' style=''>"
+                    + "<button class='btn btn-primary ' id='confirmOk' >确定<tton>"
+                    + "<button class='btn btn-default ' data-dismiss='modal'>取消<tton>"
+                    + "</div>" + "</div></div></div>";
+                $("body").append(html);
+
+                $("#myConfirm").modal("show");
+
+                $("#confirmOk").on("click", function () {
+                    $("#myConfirm").modal("hide");
+                    fun(name)
+                });
+            }
+
+            function del(name) {
+
+                $("#ext_name").val(name)
+                $("#delete").submit()
+            }
+        </script>
+{% endblock %}

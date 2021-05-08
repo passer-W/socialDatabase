@@ -1,0 +1,13 @@
+{% extends "invite.html" %}
+{% block resultbody %}
+    <div class="container">
+        <h5 class="text-center text-info" style="font-size: medium"><strong>欢迎访问，{{ name }}</strong></h5>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-info">您的邀请码为 <strong>{{ code }}</strong> ，请牢记并在今后以邀请码登录</li>
+            <li class="list-group-item list-group-item-warning">您的身份为<strong> {% if isAdmin %}管理员{% else %}普通用户{% endif %} </strong>，每所高校可查询前<strong> {% if isAdmin %}100000{% else %}30{% endif %} </strong>条数据</li>
+            <li class="list-group-item list-group-item-danger">邀请码仅供个人使用，一旦发现违例本站将永久关闭</li>
+            <li class="list-group-item list-group-item-success">点击导航栏开始查询</li>
+            <li class="list-group-item list-group-item-text" style="background-color: #262626; color: #b92c28"><strong>本社工库仅供网络安全爱好者使用，请共同维护安全和谐的网络环境</strong></li>
+        </ul>
+    </div>
+{% endblock %}

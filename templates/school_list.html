@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% block tablebody %}
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+        <tr>
+        {% for i in school_list %}
+            {% if forloop.counter|add:-1|divisibleby:"2" %}
+            </tr><tr >
+            {% endif %}
+            <td><a href="/social/info/?school={{ i.name }}" style="text-decoration:none">{{ i.name }}</a></td>
+        {% endfor %}
+        {% if not count|divisibleby:"2"  %}
+            <td></td>
+        {% endif %}
+        </tr><tr>
+
+    <script>
+    function search(){
+        window.location.href="/social/list/?q="+$("#q").val()
+    }
+    function back(){
+        window.location.href="/social/list/"
+    }
+    </script>
+{% endblock %}

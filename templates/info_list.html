@@ -1,0 +1,27 @@
+{% extends "main.html" %}
+{% block tablebody %}
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    <th>姓名</th><th>学校</th><th>身份</th><th>学/工号</th>
+    <th>密码</th><th>身份证号</th><th>手机号</th><th>电子邮箱</th>
+        {% for i in info_list %}
+            <tr>
+            <td>{{ i.name }}</td>
+            <td>{{ i.school }}</td>
+            <td>{{ i.identity }}</td>
+            <td>{{ i.xh }}</td>
+            <td>{{ i.mm }}</td>
+            <td>{{ i.sfzh }}</td>
+            <td>{{ i.phone }}</td>
+            <td>{{ i.email }}</td>
+            </tr>
+        {% endfor %}
+    <tr>
+    <script>
+    function search(){
+        window.location.href="/social/info/?school={{ school }}&q="+$("#q").val()
+    }
+    function back(){
+        window.location.href="/social/info/?school={{ school }}"
+    }
+    </script>
+{% endblock %}

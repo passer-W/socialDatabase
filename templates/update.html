@@ -1,0 +1,73 @@
+{% extends "menu.html" %}
+{% block mainbody %}
+    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    {% if result %}
+        {% if result.warning == "" %}
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>操作成功!</strong>共导入{{ result.count }}条数据
+            </div>
+        {% else %}
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>操作失败!</strong> 导入成功{{ result.count }}条数据，错误信息：{{ result.warning }}
+            </div>
+        {% endif %}
+    {% endif %}
+    <div class="input-group col-md-6 col-md-offset-3" style="margin:0 auto; text-align: center">
+        <form class="form-horizontal" role="form" id="form" action="/social/update/result/" method="post">
+            {% csrf_token %}
+            <div class="form-group" style="">
+                <label for="method">提交方式一</label>
+            </div>
+            <div class="form-group" style="">
+                <span class="help-block">字段名:<strong>姓名,学校,身份,学号/工号,密码,身份证号,手机号,邮箱</strong>；每字段以“,”隔开，可多行提交</span>
+                <textarea class="form-control" rows="6" id="text" name="text"
+                          placeholder="(示例：上海交通大学,张三,学生,2333,123456,34***1111,139123456,123456@qq.com)"></textarea>
+            </div>
+            <div class="form-group" style="">
+                <div class="checkbox">
+                    <label>
+                        <input name="both" type="checkbox" value="true">同时更新学校列表
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" id="btn1">提交</button>
+                <button type="button" class="btn btn-default" onclick="doclear()">清空</button>
+            </div>
+        </form>
+        <h5 class="page-header"></h5>
+        <form class="form-horizontal" role="form" id="form" action="/social/update/result/" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group" style="">
+                <label for="method">提交方式二</label>
+            </div>
+            <div class="form-group" style="">
+                <span class="help-block">字段名:<strong>姓名,学校,身份,学号/工号,密码,身份证号,手机号,邮箱</strong>；下载模板文件：<a
+                        href="/social/update/model">model.csv</a></span>
+                <label for="file" class="col-sm-2 control-label">选取文件</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" id="file" name="file">
+                </div>
+            </div>
+            <div class="form-group" style="">
+                <div class="checkbox">
+                    <label>
+                        <input name="both" type="checkbox" value="true">同时更新学校列表
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" id="btn1">提交</button>
+                <button type="button" class="btn btn-default" onclick="doclear()">清空</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function doclear() {
+            $("#text").val("")
+        }
+    </script>
+{% endblock %}

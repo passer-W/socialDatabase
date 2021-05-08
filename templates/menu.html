@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <style type="text/css">
+        .info-tool {
+            color: #204d74;
+        }
+
+        .new-btn {
+            background-color: rgba(0, 0, 0, 0);
+            box-shadow: none;
+            border: none;
+            color: #2b669a;
+        }
+
+        .right-btn {
+            color: #3e8f3e;
+        }
+
+        .wrong-btn {
+            color: #b92c28;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>高校社工库</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css">
+    <script src="{% static "js/jquery.js" %} "></script>
+    <style>
+        .navbar-header a {
+            color: #761c19;
+        }
+
+        .navbar-nav {
+            text-align: center;
+            float: none;
+        }
+
+        .span6 .navbar-nav li {
+            display: inline-block;
+            float: none;
+            background: #eeeeee;
+        }
+
+        .table-hover {
+            text-align: center;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        .input-sm {
+            font-size: medium;
+            color: #8c8c8c;
+        }
+
+        .modal {
+            top: 90px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#" style="color: #2b669a">高校社工库</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class={{ active.3 }}><a href="/social/invite/">邀请码验证</a></li>
+            <li class={{ active.0 }}><a href="/social/list/">学校列表</a></li>
+            <li class={{ active.1 }}><a href="#">数据列表</a></li>
+            <li class={{ active.2 }}><a href="/social/update/">贡献数据</a></li>
+            <li class={{ active.4 }}><a href="/social/manage/">管理用户</a></li>
+            <li class="col-md-offset-6 col-xs-1 pull-left"><a href="/social/exit" class="text-right"><strong>注销</strong></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% if warning != "" and warning  %}
+        <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ warning }}</strong>
+    </div>
+{% elif success_message != "" and success_message %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ success_message }}</strong>
+    </div>
+{% endif %}
+{% block mainbody %}
+{% endblock %}
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size:18px;">
+                    <span style='font-size:18px; margin-top: 4px' class='glyphicon glyphicon-remove'></span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">修改用户信息</h4>
+            </div>
+            <div class="col-md-offset-1 modal-body">
+                <form class="form-horizontal" id="editForm" action="/social/user/edit/" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-inline row col-md" style="margin: 5px">
+                            <div class="col-md-3 text-right">
+                                <label class="control-label" for="name">用户名</label>
+                            </div>
+                            <input type="text" class="input-sm" id="name" name="name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-inline row col-md" style="margin: 5px">
+                            <div class="col-md-3 text-right">
+                                <label class="control-label" for="code">邀请码</label>
+                            </div>
+                            <input type="text" class="input-sm" id="code" name="code">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-inline row col-md" style="margin: 5px">
+                            <div class="col-md-3 text-right">
+                                <label class="control-label" for="active">是否激活</label>
+                            </div>
+                            <div class="col-md-2 radio">
+                                <label>
+                                    <input type="radio" name="active" id="active" value="true"> 是
+                                </label>
+                            </div>
+                            <div class="col-md-2 radio">
+                                <label>
+                                    <input type="radio" name="active" id="active" value="false"> 否
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-inline col-md" style="margin: 5px">
+                            <div class="col-md-3 text-right">
+                                <label class="control-label" for="admin">用户权限</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select name="admin" id="admin" class="form-control">
+                                    <option>管理员</option>
+                                    <option>普通用户</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="id" style="display: none" name="id" value="">
+                </form>
+                <div class="modal-footer" style="margin: 10px">
+                    <button type="submit" class="btn btn-primary" onclick='$("#editForm").submit()'>修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+    <div class="panel-footer" style="margin-bottom:0">
+        <div class="row col-md text-center">
+                本系统仅为内测版本，有任何问题与建议欢迎反馈^ω^
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+{% extends "menu.html" %}
+{% block mainbody %}
+    {% block toolbody %}
+        <div class="input-group col-md-3" style="margin: 20px auto; text-align: center">
+            <input type="text" class="form-control m-auto" placeholder="请输入{{ query }}" name="q" id="q">
+            <span class="input-group-btn">
+               <button type="button" class="btn btn-info btn-search" style="margin-right: 3px" onclick="search()">查询</button>
+                <button type="button" class="btn btn-info btn-search" onclick="back()">返回</button>
+            </span>
+        </div>
+    {% endblock %}
+    <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover ">
+                {% block tablebody %}
+                    <p>original</p>
+                {% endblock %}
+            </table>
+            <div class="text-center">
+                <ul class="pagination">
+                    <li><a href="{{ page_url }}{{ page | add:notfirst }}">&laquo;</a></li>
+                    {% for i in pages %}
+                        {% if i != '...' %}
+                            <li class="{% if i == page %}active{% endif %}"><a
+                                    href="{{ page_url }}{{ i }}">{{ i }}</a></li>
+                        {% else %}
+                            <li><span>...</span></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li><a href="{{ page_url }}{{ page | add:notlast }}">&raquo;</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
