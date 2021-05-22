@@ -4,7 +4,7 @@
 **基于Django+bootstrap**
 
 * 提供邀请码功能：
-* 
+
 ![invite.jpg](./images/invite.png)
 
 >权限暂时分为管理员与普通用户，管理员可使用用户名登陆，普通用户首次登陆后需使用分配的邀请码登录
